@@ -319,7 +319,7 @@ void loop() {
 
   unsigned long timeElapsed = millis();
   printPercent(readLength, contentLength);
-  while (/*!(readLength > contentLength) &&*/ client.connected() /*&& millis() - timeout < 10000L*/) {
+  while (readLength < contentLength && client.connected() && millis() - timeout < 10000L) {
       if (client.available()) {
        if (!file.write(char(client.read())))
       {
@@ -341,7 +341,7 @@ void loop() {
 
   // Shutdown
 
-  //client.stop();
+  client.stop();
   Serial.println(F("Server disconnected"));
   sim_modem.gprsDisconnect();
   Serial.println(F("GPRS disconnected"));
